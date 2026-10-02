@@ -14,6 +14,36 @@ class CreateCategory(StatesGroup):
 class UpdateCategory(StatesGroup):
     get_id = State()
     get_new_name = State()
+    
+    
+
+class AiRequest(StatesGroup):
+    get_request = State()
+        
+    
+    
+    
+
+@router.message(Command("start_chat"))
+async def add_category(message: Message, state: FSMContext):
+    await message.answer("Введите запрос: ")
+    await state.set_state(AiRequest.get_request)
+    
+    
+    
+    
+        
+    
+    
+@router.message(AiRequest.get_request)
+async def state_name_add(message: Message, state: FSMContext):
+    data = get_message(message.text)
+    await message.answer(data)
+
+        
+    
+    
+    
 
 @router.message(F.text == "➕ Добавить Категорию")
 @router.message(Command("add_category"))

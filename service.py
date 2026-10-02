@@ -1,4 +1,5 @@
 from connection import connection
+import requests
 
 
 async def get_user(telegram_id):
@@ -97,3 +98,23 @@ async def delete_category_service(cat_id):
 
     finally:
         await conn.close()
+        
+        
+def get_message(message):
+    response = requests.post(
+    "https://api.inceptionlabs.ai/v1/chat/completions",
+    headers={
+        "Authorization": "Bearer sk_8beab7b0b2a13a10b6f8f21981dfadff",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model": "mercury-2.5",
+        "reasoning_effort": "high",
+        "messages": [
+        {"role": "user", "content": f"{message}"}
+        ]
+    }
+    )
+    message = response.json()
+    data = message["choices"][0]["message"]["content"]
+    return data
